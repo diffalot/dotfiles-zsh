@@ -99,3 +99,6 @@ bindkey '^[OB' history-beginning-search-forward
 # GOLANG
 export GOPATH=$HOME/go
 export PATH=$PATH:$HOME/build/go/bin:$GOPATH/bin
+
+# Ruby Gems in Home Directory
+export PATH=$HOME/.gem/ruby/2.2.0/bin:$PATH
