@@ -1,7 +1,9 @@
-# login to tmux session
-if which tmux >/dev/null 2>&1; then
-    # if no session is started, start a new session
-    test -z ${TMUX} && (tmux attach -d || tmux)
+# login to tmux session on marker
+if [ $(hostname) = "marker.diff.mx" ]; then
+	if which tmux >/dev/null 2>&1; then
+	    # if no session is started, start a new session
+	    test -z ${TMUX} && (tmux attach -d || tmux)
+	fi
 fi
 
 # Path to your oh-my-zsh installation.
