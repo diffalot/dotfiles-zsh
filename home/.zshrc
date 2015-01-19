@@ -104,3 +104,8 @@ export PATH=$PATH:$HOME/build/go/bin:$GOPATH/bin
 
 # Ruby Gems in Home Directory
 export PATH=$HOME/.gem/ruby/2.2.0/bin:$PATH
+
+# if secrets file exists, load it
+if [[ -a $HOME/.zsh-secrets ]]; then
+	source $HOME/.zsh-secrets
+fi
