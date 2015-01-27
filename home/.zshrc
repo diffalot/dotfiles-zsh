@@ -87,9 +87,14 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+# if .homesick directory exists, add alias for all status
+if [[ -a $HOME/.homesick ]]; then
+	alias homesick-status="find ~/.homesick/repos -maxdepth 1 -mindepth 1 -printf '%f\n' -exec homesick status {} \\;"
+fi
+
 export EDITOR='vim'
 
-# better history completion 
+# better history completion
 # search all the way to the cursor, not just the first word
 bindkey '^[OA' history-beginning-search-backward
 bindkey '^[OB' history-beginning-search-forward
