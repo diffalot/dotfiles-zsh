@@ -6,6 +6,13 @@ if [ $(hostname) = "marker.diff.mx" ]; then
 	fi
 fi
 
+# terminal-picture takes an image file as an argument and displays it at
+# terminal width with xterm-256-colors
+function terminal-picture {
+	convert $1 -resize `expr $COLUMNS / 2 - 2` /tmp/terminal-picture.png && img-cat /tmp/terminal-picture.png;
+}
+terminal-picture ~/avatar.png
+
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
