@@ -97,6 +97,8 @@ source $ZSH/oh-my-zsh.sh
 # if .homesick directory exists, add alias for all status
 if [[ -a $HOME/.homesick ]]; then
 	alias homesick-status="find ~/.homesick/repos -maxdepth 1 -mindepth 1 -printf '%f\n' -exec homesick status {} \\;"
+	alias homesick-pull="find ~/.homesick/repos -maxdepth 1 -mindepth 1 -printf '%f\n' -exec homesick pull {} \\;"
+	alias homesick-push="find ~/.homesick/repos -maxdepth 1 -mindepth 1 -printf '%f\n' -exec homesick push {} \\;"
 fi
 
 export EDITOR='vim'
