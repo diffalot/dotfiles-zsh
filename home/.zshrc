@@ -9,7 +9,29 @@ fi
 # terminal-picture takes an image file as an argument and displays it at
 # terminal width with xterm-256-colors
 function terminal-picture {
-	convert $1 -resize `expr $COLUMNS / 2 - 2` /tmp/terminal-picture.png && img-cat /tmp/terminal-picture.png;
+	#echo "terminal: $COLUMNS $LINES"
+	WIDTH_HEIGHT=`identify $1 | awk '{ print $3 }' | sed -e 's/x/ /g'`
+	#echo "picture: $WIDTH_HEIGHT"
+	PIC_WIDTH=`echo $WIDTH_HEIGHT | awk '{ print $1 }'`
+	PIC_HEIGHT=`echo $WIDTH_HEIGHT | awk '{ print $2 }'`
+	#echo "width: $PIC_WIDTH"
+	#echo "height: $PIC_HEIGHT"
+	MAX_WIDTH=`expr $COLUMNS / 2 - 2`
+	MAX_HEIGHT=`expr $LINES / 2 - 3`
+	#echo "max: $MAX_WIDTH x $MAX_HEIGHT"
+	PIC_RATIO=`expr $PIC_WIDTH / $PIC_HEIGHT`
+	#echo "pic ratio: $PIC_RATIO"
+	TERM_RATIO=`expr $COLUMNS / $LINES`
+	#echo "term ratio: $TERM_RATIO"
+	if [ "$TERM_RATIO" -gt "$PIC_RATIO" ];
+	then
+		#echo "using height as constraint";
+		convert $1 -resize x`expr $LINES - 1` /tmp/terminal-picture.png && img-cat /tmp/terminal-picture.png;
+	else
+		#echo "using width as constrint";
+		convert $1 -resize `expr $COLUMNS / 2 - 2` /tmp/terminal-picture.png && img-cat /tmp/terminal-picture.png;
+	fi
+
 }
 terminal-picture ~/avatar.png
 
