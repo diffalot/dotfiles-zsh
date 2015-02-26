@@ -82,7 +82,7 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(archlinux git gpg-agent node rsync ssh-agent sudo systemd tmux mercurial go golang)
+plugins=(archlinux git gpg-agent node rsync ssh-agent sudo systemd tmux mercurial go golang rbenv plenv)
 
 # User configuration
 
@@ -137,9 +137,6 @@ bindkey '^[OB' history-beginning-search-forward
 # GOLANG
 export GOPATH=$HOME/go
 export PATH=$PATH:$HOME/build/go/bin:$GOPATH/bin
-
-# Ruby Gems in Home Directory
-export PATH=$HOME/.gem/ruby/2.2.0/bin:$PATH
 
 # if secrets file exists, load it
 if [[ -a $HOME/.zsh-secrets ]]; then
