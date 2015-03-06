@@ -33,7 +33,6 @@ function terminal-picture {
 	fi
 
 }
-terminal-picture ~/avatar.png
 
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
@@ -82,7 +81,7 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(archlinux git gpg-agent node rsync ssh-agent sudo systemd tmux mercurial go golang rbenv plenv)
+plugins=(archlinux git gpg-agent node rsync ssh-agent sudo systemd tmux mercurial go golang nvm rbenv plenv)
 
 # User configuration
 
@@ -138,7 +137,20 @@ bindkey '^[OB' history-beginning-search-forward
 export GOPATH=$HOME/go
 export PATH=$PATH:$HOME/build/go/bin:$GOPATH/bin
 
+# GET GEMS PATH
+export PATH=$(ruby -e 'print Gem.user_dir')/bin:$PATH
+
 # if secrets file exists, load it
 if [[ -a $HOME/.zsh-secrets ]]; then
 	source $HOME/.zsh-secrets
 fi
+
+function docker-cleanup {
+	echo "Removing non-running containers"
+	docker ps -a | grep 'hours ago' | awk '{print $1}' | xargs --no-run-if-empty docker rm;
+	echo "Removing unnamed images"
+	docker rmi $(docker images | grep "^<none>" | awk '{print $3}');
+}
+
+# run terminal-picture after nvm is initialized by oh-my-zsh
+terminal-picture ~/avatar.png
