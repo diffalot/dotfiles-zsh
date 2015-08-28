@@ -138,7 +138,7 @@ export GOPATH=$HOME/go
 export PATH=$PATH:$HOME/build/go/bin:$GOPATH/bin
 
 # GET GEMS PATH
-export PATH=$(ruby -e 'print Gem.user_dir')/bin:$PATH
+#export PATH=$(ruby -e 'print Gem.user_dir')/bin:$PATH
 
 # if secrets file exists, load it
 if [[ -a $HOME/.zsh-secrets ]]; then
@@ -154,3 +154,6 @@ function docker-cleanup {
 
 # run terminal-picture after nvm is initialized by oh-my-zsh
 terminal-picture ~/avatar.png
+alias screen-setup-edgetheory="xrandr --auto && xrandr --auto --output DP1 --right-of eDP1"
+alias screen-setup-hdmi-right="xrandr --auto && xrandr --auto --output HDMI1 --right-of eDP1"
+alias fix-history='mv .zsh_history .zsh_history_bad && strings .zsh_history_bad > .zsh_history && fc -R .zsh_history'
