@@ -23,6 +23,7 @@ echo ""
 cd /home/diff
 sudo rsync -axX --exclude .cache --exclude .config/google-chrome --exclude '.vim/tmp/*' --exclude Videos --exclude Desktop --exclude 'build/linux-*' --progress --partial --delete /home/diff/ /mnt/home/diff/
 
+echo ""
 echo "Unmounting Rescue Volume"
 echo ""
 sudo sync
