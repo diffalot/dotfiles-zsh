@@ -34,6 +34,12 @@ function terminal-picture {
 
 }
 
+function lint-with {
+	cd $HOME/.homesick/repos/vim
+	git checkout $1
+	cd -
+}
+
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
@@ -81,11 +87,11 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(archlinux git gpg-agent node rsync ssh-agent sudo systemd tmux mercurial go golang nvm rbenv plenv)
+plugins=(archlinux git gpg-agent node rsync ssh-agent sudo systemd tmux mercurial go golang nvm rbenv)
 
 # User configuration
 
-export PATH="$HOME/bin:$HOME/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl"
+export PATH="$HOME/.bin:$HOME/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
@@ -145,6 +151,13 @@ if [[ -a $HOME/.zsh-secrets ]]; then
 	source $HOME/.zsh-secrets
 fi
 
+# PERL Environment
+export PATH="$HOME/.plenv/bin:$PATH"
+eval "$(plenv init - zsh)"
+
+# WINE
+export WINEARCH=win32
+
 function docker-cleanup {
 	echo "Removing non-running containers"
 	docker ps -a | grep 'hours ago' | awk '{print $1}' | xargs --no-run-if-empty docker rm;
@@ -154,6 +167,8 @@ function docker-cleanup {
 
 # run terminal-picture after nvm is initialized by oh-my-zsh
 terminal-picture ~/avatar.png
-alias screen-setup-edgetheory="xrandr --auto && xrandr --auto --output DP1 --right-of eDP1"
-alias screen-setup-hdmi-right="xrandr --auto && xrandr --auto --output HDMI1 --right-of eDP1"
+alias screen-setup-edgetheory="xrandr --auto && xrandr --output eDP1 --right-of DP1"
+alias screen-setup-hdmi-right="xrandr --auto && xrandr --auto --output eDP1 --left-of HDMI2 --output HDMI2 --rotate normal"
+alias screen-setup-hdmi-portrait="xrandr --auto && xrandr --output HDMI2 --rotate left --pos 2561x0 --output eDP1 --pos 0x480"
 alias fix-history='mv .zsh_history .zsh_history_bad && strings .zsh_history_bad > .zsh_history && fc -R .zsh_history'
+alias jamendo-search='xdg-open "https://www.jamendo.com/en/search?qs=q=$(mpc | awk "NR==1" | awk "BEGIN {FS=\": \"} {print $2}" | sed -e "s/ /%20/g")"; echo $(mpc | awk \"NR==1\" | awk "BEGIN {FS=\": \"} {print $2}")'
