@@ -171,5 +171,5 @@ alias screen-setup-edgetheory="xrandr --auto && xrandr --output eDP1 --right-of 
 alias screen-setup-hdmi-right="xrandr --auto && xrandr --auto --output eDP1 --left-of HDMI2 --output HDMI2 --rotate normal"
 alias screen-setup-hdmi-portrait="xrandr --auto && xrandr --output HDMI2 --rotate left --pos 2561x0 --output eDP1 --pos 0x480"
 alias fix-history='mv .zsh_history .zsh_history_bad && strings .zsh_history_bad > .zsh_history && fc -R .zsh_history'
-alias toolchain-node='npm update -g && npm install nodemon http-server browserify webpack webpack-dev-server bower grunt-cli img-cat standard jshint eslint tape'
+alias toolchain-node='npm update -g && npm install -g nodemon http-server browserify webpack webpack-dev-server bower grunt-cli img-cat standard jshint eslint tape'
 alias jamendo-search='xdg-open "https://www.jamendo.com/en/search?qs=q=$(mpc | awk "NR==1" | awk "BEGIN {FS=\": \"} {print $2}" | sed -e "s/ /%20/g")"; echo $(mpc | awk \"NR==1\" | awk "BEGIN {FS=\": \"} {print $2}")'
