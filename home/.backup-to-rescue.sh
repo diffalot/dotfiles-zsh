@@ -31,12 +31,13 @@ echo ""
 echo "Copying Changed Files"
 echo ""
 cd /home/diff
-sudo rsync -axX --exclude .android --exclude '.AndroidStudio*' --exclude .clipboard --exclude .cache --exclude .config/google-chrome --exclude '.vim/tmp/*' --exclude .cpanm --exclude .ipfs --exclude .gem --exclude .local/share --exclude .mozilla --exclude .multirust --exclude .node-gyp --exclude .nvm --exclude .npm --exclude .plenv --exclude .pyenv --exclude .rbenv --exclude .wine --exclude Android --exclude AndroidStudioProjects --exclude Media --exclude 'My Games' --exclude node_modules --exclude Desktop --exclude Downloads --exclude 'build/linux-*' --progress --partial --delete /home/diff/ /mnt/home/diff/
+sudo rsync -axX --exclude .android --exclude '.AndroidStudio*' --exclude .clipboard --exclude .cache --exclude .config/google-chrome --exclude '.vim/tmp/*' --exclude .cpanm --exclude .ipfs --exclude .gem --exclude .local/share --exclude .mozilla --exclude .multirust --exclude .node-gyp --exclude .nvm --exclude .npm --exclude .plenv --exclude .pyenv --exclude .rbenv --exclude .wine --exclude .winetricks --exclude Android --exclude AndroidStudioProjects --exclude Media --exclude 'My Games' --exclude node_modules --exclude Desktop --exclude Downloads --exclude 'build/linux-*' --progress --partial --delete /home/diff/ /mnt/home/diff/
 
 echo ""
 echo "Unmounting Rescue Volume"
 echo ""
 sudo sync
+df -h /mnt
 sudo umount -R /mnt
 sudo vgchange -a n rescue # FIXME maybe this command isn't needed anymore
 sudo cryptsetup close /dev/mapper/rescue

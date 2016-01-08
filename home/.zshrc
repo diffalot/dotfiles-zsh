@@ -173,3 +173,19 @@ alias screen-setup-hdmi-portrait="xrandr --auto && xrandr --output HDMI2 --rotat
 alias fix-history='mv .zsh_history .zsh_history_bad && strings .zsh_history_bad > .zsh_history && fc -R .zsh_history'
 alias toolchain-node='npm update -g && npm install -g nodemon http-server browserify webpack webpack-dev-server bower grunt-cli img-cat standard jshint eslint tape'
 alias jamendo-search='xdg-open "https://www.jamendo.com/en/search?qs=q=$(mpc | awk "NR==1" | awk "BEGIN {FS=\": \"} {print $2}" | sed -e "s/ /%20/g")"; echo $(mpc | awk \"NR==1\" | awk "BEGIN {FS=\": \"} {print $2}")'
+
+alias lock-disable="xset s off -dpms; xautolock -disable"
+alias lock-enable="xautolock -enable; xset s on +dpms"
+
+#WINE
+wine-prefix() {
+   export WINEPREFIX="$HOME/.winetricks/$1"
+}
+
+wine-goc() {
+   cd $WINEPREFIX/drive_c
+}
+
+wine-lsp() {
+   ls $* $HOME/.winetricks
+}
