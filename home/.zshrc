@@ -124,6 +124,7 @@ source $ZSH/oh-my-zsh.sh
 # if .homesick directory exists, add alias for all status
 if [[ -a $HOME/.homesick ]]; then
 	alias homesick-status="find ~/.homesick/repos -maxdepth 1 -mindepth 1 -printf '%f\n' -exec homesick status {} \\;"
+	alias homesick-commit="find ~/.homesick/repos -maxdepth 1 -mindepth 1 -printf '%f\n' -exec homesick commit {} 'quick update' \\;"
 	alias homesick-pull="find ~/.homesick/repos -maxdepth 1 -mindepth 1 -printf '%f\n' -exec homesick pull {} \\;"
 	alias homesick-push="find ~/.homesick/repos -maxdepth 1 -mindepth 1 -printf '%f\n' -exec homesick push {} \\;"
 fi
@@ -171,7 +172,8 @@ alias screen-setup-edgetheory="xrandr --auto && xrandr --output eDP1 --right-of 
 alias screen-setup-hdmi-right="xrandr --auto && xrandr --auto --output eDP1 --left-of HDMI2 --output HDMI2 --rotate normal"
 alias screen-setup-hdmi-portrait="xrandr --auto && xrandr --output HDMI2 --rotate left --pos 2561x0 --output eDP1 --pos 0x480"
 alias fix-history='mv .zsh_history .zsh_history_bad && strings .zsh_history_bad > .zsh_history && fc -R .zsh_history'
-alias toolchain-node='npm update -g && npm install -g nodemon http-server browserify webpack webpack-dev-server bower grunt-cli img-cat standard jshint eslint tape'
+alias toolchain-node='npm install -g nodemon http-server browserify webpack webpack-dev-server bower grunt-cli img-cat standard jshint eslint tape protractor npm-check-updates'
+alias toolchain-ruby='gem install pws overcommit'
 alias jamendo-search='xdg-open "https://www.jamendo.com/en/search?qs=q=$(mpc | awk "NR==1" | awk "BEGIN {FS=\": \"} {print $2}" | sed -e "s/ /%20/g")"; echo $(mpc | awk \"NR==1\" | awk "BEGIN {FS=\": \"} {print $2}")'
 
 alias lock-disable="xset s off -dpms; xautolock -disable"
@@ -189,3 +191,6 @@ wine-goc() {
 wine-lsp() {
    ls $* $HOME/.winetricks
 }
+
+# added by travis gem
+[ -f /home/diff/.travis/travis.sh ] && source /home/diff/.travis/travis.sh

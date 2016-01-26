@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+cd "$(dirname "$0")"
+
 sudo cryptsetup open --type luks /dev/sdb2 rescue
 
 echo ""
@@ -25,13 +27,14 @@ sudo mv /tmp/installed_packages.txt /mnt/sterling_package_list.txt
 echo ""
 echo "Updating Rescue System"
 echo ""
+sudo pacman-key --refresh-keys
 sudo arch-chroot /mnt pacman -Syu
 
 echo ""
 echo "Copying Changed Files"
 echo ""
 cd /home/diff
-sudo rsync -axX --exclude .android --exclude '.AndroidStudio*' --exclude .clipboard --exclude .cache --exclude .config/google-chrome --exclude '.vim/tmp/*' --exclude .cpanm --exclude .ipfs --exclude .gem --exclude .local/share --exclude .mozilla --exclude .multirust --exclude .node-gyp --exclude .nvm --exclude .npm --exclude .plenv --exclude .pyenv --exclude .rbenv --exclude .wine --exclude .winetricks --exclude Android --exclude AndroidStudioProjects --exclude Media --exclude 'My Games' --exclude node_modules --exclude Desktop --exclude Downloads --exclude 'build/linux-*' --progress --partial --delete /home/diff/ /mnt/home/diff/
+sudo rsync -axX --exclude .android --exclude '.AndroidStudio*' --exclude .clipboard --exclude .cache --exclude .config/google-chrome --exclude '.vim/tmp/*' --exclude .cpanm --exclude .ipfs --exclude .gem --exclude .local/share --exclude .mozilla --exclude .multirust --exclude .node-gyp --exclude .nvm --exclude .npm --exclude .plenv --exclude .pyenv --exclude .rbenv --exclude .wine --exclude .winetricks --exclude Android --exclude AndroidStudioProjects --exclude Media --exclude 'My Games' --exclude node_modules --exclude Desktop --exclude Downloads --exclude 'build/linux-*' --exclude 'build/UnrealEngine' --progress --partial --delete /home/diff/ /mnt/home/diff/
 
 echo ""
 echo "Unmounting Rescue Volume"
