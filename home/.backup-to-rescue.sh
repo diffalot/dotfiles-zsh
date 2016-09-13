@@ -2,7 +2,9 @@
 
 cd "$(dirname "$0")"
 
-sudo cryptsetup open --type luks /dev/sdb2 rescue
+TARGET_DRIVE=$1
+
+sudo cryptsetup open --type luks $TARGET_DRIVE'2' rescue
 
 echo ""
 echo "Authentication Accepted"
@@ -14,7 +16,7 @@ echo ""
 echo "Mounting Rescue Volume"
 echo ""
 sudo mount /dev/mapper/rescue-root /mnt
-sudo mount /dev/sdb1 /mnt/boot
+sudo mount $TARGET_DRIVE'1' /mnt/boot
 
 echo ""
 echo "Copying List of Currently Installed Packages"
@@ -34,7 +36,7 @@ echo ""
 echo "Copying Changed Files"
 echo ""
 cd /home/diff
-sudo rsync -axX --exclude .android --exclude '.AndroidStudio*' --exclude .clipboard --exclude .cache --exclude .config/google-chrome --exclude '.vim/tmp/*' --exclude .cpanm --exclude .ipfs --exclude .gem --exclude .local/share --exclude .mozilla --exclude .multirust --exclude .node-gyp --exclude .nvm --exclude .npm --exclude .plenv --exclude .pyenv --exclude .rbenv --exclude .wine --exclude .winetricks --exclude Android --exclude AndroidStudioProjects --exclude Media --exclude 'My Games' --exclude node_modules --exclude Desktop --exclude Downloads --exclude 'build/linux-*' --exclude 'build/UnrealEngine' --progress --partial --delete /home/diff/ /mnt/home/diff/
+sudo rsync -axX --exclude .android --exclude '.AndroidStudio*' --exclude .clipboard --exclude .cache --exclude .config/google-chrome --exclude '.vim/tmp/*' --exclude .cpanm --exclude .ipfs --exclude .gem --exclude .local/share --exclude .mozilla --exclude .multirust --exclude .node-gyp --exclude .nvm --exclude .npm --exclude .plenv --exclude .pyenv --exclude .rbenv --exclude .wine --exclude .winetricks --exclude Android --exclude AndroidStudioProjects --exclude Media --exclude 'My Games' --exclude node_modules --exclude Desktop --exclude Downloads --exclude 'build/linux-*' --exclude 'build/UnrealEngine' --exclude 'edgetheory/**/db-dumps/*.sql' --progress --partial --delete /home/diff/ /mnt/home/diff/
 
 echo ""
 echo "Unmounting Rescue Volume"

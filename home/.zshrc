@@ -38,6 +38,9 @@ function lint-with {
 	cd $HOME/.homesick/repos/vim
 	git checkout $1
 	cd -
+	cd $HOME/.homesick/repos/spacemacs
+	git checkout $1
+	cd -
 }
 
 # Path to your oh-my-zsh installation.
@@ -87,7 +90,7 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(archlinux git gpg-agent node rsync ssh-agent sudo systemd tmux mercurial go golang nvm rbenv)
+plugins=(archlinux git gpg-agent node rsync ssh-agent sudo systemd tmux mercurial go golang rbenv)
 
 # User configuration
 
@@ -140,6 +143,10 @@ bindkey '^[OB' history-beginning-search-forward
 # powerline
 #. $HOME/.local/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh
 
+# NODENV
+export PATH="$HOME/.nodenv/bin:$PATH"
+eval "$(nodenv init -)"
+
 # GOLANG
 export GOPATH=$HOME/go
 export PATH=$PATH:$HOME/build/go/bin:$GOPATH/bin
@@ -164,20 +171,27 @@ function docker-cleanup {
 	docker ps -a | grep 'hours ago' | awk '{print $1}' | xargs --no-run-if-empty docker rm;
 	echo "Removing unnamed images"
 	docker rmi $(docker images | grep "^<none>" | awk '{print $3}');
+	echo "Removing orphaned Volumes"
+	docker volume ls -qf dangling=true | xargs -r docker volume rm
 }
 
 # run terminal-picture after nvm is initialized by oh-my-zsh
 terminal-picture ~/avatar.png
-alias screen-setup-edgetheory="xrandr --auto && xrandr --output eDP1 --right-of DP1"
-alias screen-setup-hdmi-right="xrandr --auto && xrandr --auto --output eDP1 --left-of HDMI2 --output HDMI2 --rotate normal"
-alias screen-setup-hdmi-portrait="xrandr --auto && xrandr --output HDMI2 --rotate left --pos 2561x0 --output eDP1 --pos 0x480"
+alias screen-setup-edgetheory="xrandr --auto && xrandr --output eDP-1 --right-of DP-1"
+alias screen-setup-hdmi-right="xrandr --auto && xrandr --auto --output eDP-1 --left-of HDMI-2 --output HDMI-2 --rotate normal"
+alias screen-setup-hdmi-portrait="xrandr --auto && xrandr --output HDMI-2 --rotate left --pos 2561x0 --output eDP-1 --pos 0x480"
+alias screen-setup-single="xrandr --auto && xrandr --output DP-1 --off --output DP-2 --off --output HDMI-1 --off --output HDMI-2 --off"
 alias fix-history='mv .zsh_history .zsh_history_bad && strings .zsh_history_bad > .zsh_history && fc -R .zsh_history'
-alias toolchain-node='npm install -g nodemon http-server browserify webpack webpack-dev-server bower grunt-cli img-cat standard jshint eslint tape protractor npm-check-updates'
-alias toolchain-ruby='gem install pws overcommit'
+alias toolchain-node='npm update -g && npm install -g nodemon http-server browserify webpack webpack-dev-server bower grunt-cli img-cat standard babel-eslint jshint eslint csscomb tape protractor mocha npm-check-updates npmrc jsdoc shonkwrap horizon cordova'
+alias toolchain-ruby='gem install pws homesick overcommit bundler foreman rubocop'
 alias jamendo-search='xdg-open "https://www.jamendo.com/en/search?qs=q=$(mpc | awk "NR==1" | awk "BEGIN {FS=\": \"} {print $2}" | sed -e "s/ /%20/g")"; echo $(mpc | awk \"NR==1\" | awk "BEGIN {FS=\": \"} {print $2}")'
 
 alias lock-disable="xset s off -dpms; xautolock -disable"
 alias lock-enable="xautolock -enable; xset s on +dpms"
+
+alias spam-filter="pws get diffalot@diff.mx-email 0 && sieve-connect -s diff.mx -u diffalot@diff.mx --remotesieve all_rules --edit"
+
+alias mutt='cd ~/Desktop && mutt && cd -'
 
 #WINE
 wine-prefix() {
