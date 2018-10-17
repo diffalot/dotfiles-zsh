@@ -90,7 +90,7 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(archlinux git gpg-agent node rsync ssh-agent sudo systemd tmux mercurial go golang rbenv)
+plugins=(archlinux git gpg-agent node rsync ssh-agent sudo systemd tmux kubectl mercurial go golang rbenv)
 
 # User configuration
 
@@ -132,7 +132,7 @@ if [[ -a $HOME/.homesick ]]; then
 	alias homesick-push="find ~/.homesick/repos -maxdepth 1 -mindepth 1 -printf '%f\n' -exec homesick push {} \\;"
 fi
 
-export EDITOR='vim'
+export EDITOR='nvim'
 
 # better history completion
 # search all the way to the cursor, not just the first word
@@ -144,8 +144,15 @@ bindkey '^[OB' history-beginning-search-forward
 #. $HOME/.local/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh
 
 # NODENV
-export PATH="$HOME/.nodenv/bin:$PATH"
-eval "$(nodenv init -)"
+#export PATH="$HOME/.nodenv/bin:$PATH"
+#eval "$(nodenv init -)"
+
+# pyenv with virtualenv
+# eval "$(pyenv virtualenv-init -)"
+
+# nvm
+export NVM_DIR="/home/diffalot/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 
 # GOLANG
 export GOPATH=$HOME/go
@@ -163,9 +170,6 @@ fi
 export PATH="$HOME/.plenv/bin:$PATH"
 eval "$(plenv init - zsh)"
 
-# WINE
-export WINEARCH=win32
-
 function docker-cleanup {
 	echo "Removing non-running containers"
 	docker ps -a | grep 'hours ago' | awk '{print $1}' | xargs --no-run-if-empty docker rm;
@@ -177,23 +181,44 @@ function docker-cleanup {
 
 # run terminal-picture after nvm is initialized by oh-my-zsh
 terminal-picture ~/avatar.png
-alias screen-setup-edgetheory="xrandr --auto && xrandr --output eDP-1 --right-of DP-1"
-alias screen-setup-hdmi-right="xrandr --auto && xrandr --auto --output eDP-1 --left-of HDMI-2 --output HDMI-2 --rotate normal"
-alias screen-setup-hdmi-portrait="xrandr --auto && xrandr --output HDMI-2 --rotate left --pos 2561x0 --output eDP-1 --pos 0x480"
-alias screen-setup-single="xrandr --auto && xrandr --output DP-1 --off --output DP-2 --off --output HDMI-1 --off --output HDMI-2 --off"
-alias fix-history='mv .zsh_history .zsh_history_bad && strings .zsh_history_bad > .zsh_history && fc -R .zsh_history'
-alias toolchain-node='npm update -g && npm install -g nodemon http-server browserify webpack webpack-dev-server bower grunt-cli img-cat standard babel-eslint jshint eslint csscomb tape protractor mocha npm-check-updates npmrc jsdoc shonkwrap horizon cordova'
-alias toolchain-ruby='gem install pws homesick overcommit bundler foreman rubocop'
-alias jamendo-search='xdg-open "https://www.jamendo.com/en/search?qs=q=$(mpc | awk "NR==1" | awk "BEGIN {FS=\": \"} {print $2}" | sed -e "s/ /%20/g")"; echo $(mpc | awk \"NR==1\" | awk "BEGIN {FS=\": \"} {print $2}")'
 
 alias lock-disable="xset s off -dpms; xautolock -disable"
 alias lock-enable="xautolock -enable; xset s on +dpms"
+
+alias screen-setup-hdmi-right-portrait-displayport-right="xrandr --auto && xrandr --output HDMI2 --rotate left --pos 2561x0 --output eDP1 --pos 0x480 --output DP1 --pos 4481x480"d
+alias screen-setup-hdmi-above="xrandr --auto && xrandr --output HDMI2 --above eDP1"
+alias screen-setup-hdmi-right="xrandr --auto && xrandr --auto --Vyoutput eDP1 --left-of HDMI2 --output HDMI2 --rotate normal"
+alias screen-setup-hdmi-right-portrait="xrandr --auto && xrandr --output HDMI2 --rotate left --pos 2561x0 --output eDP1 --pos 0x480"
+
+alias screen-setup-displayport-right="xrandr --auto && xrandr --auto --output eDP1 --left-of DP1 --output DP1 --rotate normal"
+
+alias screen-setup-displayport-right-portrait="xrandr --auto && xrandr --output DP1 --rotate left --pos 2561x0 --output eDP1 --pos 0x1280"
+alias screen-setup-displayport-right-portrait-hdmi-right="xrandr --auto && xrandr --output DP1 --rotate left --pos 2561x0 --output eDP1 --pos 0x1280 --output HDMI2 --pos 4721x1280"
+
+alias screen-setup-laptop-only="xrandr --auto && xrandr --output DP1 --off --output DP2 --off --output HDMI1 --off --output HDMI2 --off"
+
+alias screen-setup-present="screen-setup-laptop-only; lock-disable"
+alias screen-setup-desk="screen-setup-hdmi-right-portrait; lock-enable"
+
+alias fix-history='mv .zsh_history .zsh_history_bad && strings .zsh_history_bad > .zsh_history && fc -R .zsh_history'
+alias toolchain-node='npm update -g && npm install -g nodemon http-server browserify webpack webpack-dev-server img-cat babel-eslint eslint eslint-plugin-react js-beautify csscomb tape mocha npm-check-updates npmrc jsdoc cordova tern hostile ot-pretty-json'
+alias toolchain-ruby='gem install pws homesick overcommit bundler foreman rubocop'
+
+alias android-emulator="/opt/android-sdk/tools/emulator -netdelay none -netspeed full -avd Nexus_5_API_23_x86 -use-system-libs"
 
 alias spam-filter="pws get diffalot@diff.mx-email 0 && sieve-connect -s diff.mx -u diffalot@diff.mx --remotesieve all_rules --edit"
 
 alias mutt='cd ~/Desktop && mutt && cd -'
 
-#WINE
+alias vim='nvim'
+
+# Rust
+
+source $HOME/.cargo/env
+
+# WINE
+export WINEARCH=win32
+
 wine-prefix() {
    export WINEPREFIX="$HOME/.winetricks/$1"
 }
@@ -208,3 +233,14 @@ wine-lsp() {
 
 # added by travis gem
 [ -f /home/diff/.travis/travis.sh ] && source /home/diff/.travis/travis.sh
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f /home/diff/google-cloud-sdk/path.zsh.inc ]; then
+  source '/home/diff/google-cloud-sdk/path.zsh.inc'
+fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f /home/diff/google-cloud-sdk/completion.zsh.inc ]; then
+  source '/home/diff/google-cloud-sdk/completion.zsh.inc'
+fi
+if [  ]; then source <(kubectl completion zsh); fi
